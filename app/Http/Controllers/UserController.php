@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\MsUser;
 use Illuminate\Validation\ValidationException;
-
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {    public function me(Request $request)
@@ -234,6 +234,40 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+    public function storeUser(Request $request)
+    {
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:msuser,email',
+                'roleId' => 'required|integer',
+            ]);
+
+            $defaultPassword = 'Password123';
+
+            $user = new MsUser();
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->roleId = $request->roleId;
+            $user->password = Hash::make($defaultPassword);  
+
+            $user->save();
+
+            return response()->json([
+                'message' => 'User berhasil disimpan',
+                'data' => $user,
+            ], 200);
+
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat menyimpan data user',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
 
 
 

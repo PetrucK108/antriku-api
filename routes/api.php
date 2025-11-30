@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LocalizationController;
+use App\Http\Controllers\RoleController;
 
 // Route::get('/management/data', function () {
 //     return response()->json(['message' => 'Admin atau Staff boleh masuk']);
@@ -20,9 +21,13 @@ Route::get('/me/permissions', [UserController::class, 'getPermissions'])->middle
 
 Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/get-all-user', [UserController::class, 'getAllUser'])->name('getAllUser');
+    Route::post('/store-user',[UserController::class,'storeUser'])->name('storeUser');
     Route::get('/user-detail/{id}',[userController::class,'getUserById'])->name('getUserById');
     Route::delete('/delete-user/{id}', [UserController::class, 'deleteUser'])->name('deleteUser');
+    Route::put('/update-user/{id}',[UserController::class,'updateUser'])->name('updateUser');
 
+    //role punya
+    Route::get('/get-all-role',[RoleController::class,'getAllRole'])->name('getAllRole');
 });
 
 
