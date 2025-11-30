@@ -131,17 +131,17 @@ class UserController extends Controller
     public function getAllUser(Request $request)
     {
         $page = $request->query('page', 1);
-        $limit = $request->query('limit', 10);
+        $limit = $request->query('pageSize', 10);  
 
         $query = MsUser::with('role');
 
-        $filters = $request->query('filters', []); // ambil array filters
+        $filters = $request->query('filters', []); 
 
         if (!empty($filters['name'])) {
             $query->where('name', 'like', '%' . $filters['name'] . '%');
         }
 
-        $paginated = $query->paginate($limit, ['*'], 'page', $page);
+        $paginated = $query->paginate($limit, ['*'], 'page', $page);  
 
         // Tambahkan roleName langsung
         $paginated->getCollection()->transform(function ($user) {
@@ -158,6 +158,84 @@ class UserController extends Controller
 
         return response()->json($paginated);
     }
+
+    public function getUserById($id, Request $request)
+    {
+        $user = MsUser::with('role')->find($id);
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'User tidak ditemukan',
+            ], 404);
+        }
+
+        return response()->json([
+            'id' => $user->id,
+            'name' => $user->name,
+            'email' => $user->email,
+            'roleId' => $user->roleId,
+            'roleName' => $user->role?->name, 
+            'created_at' => $user->created_at,
+            'updated_at' => $user->updated_at,
+        ], 200);
+    }
+
+    public function deleteUser($id)
+    {
+        try {
+            
+            $user = MsUser::findOrFail($id);
+
+            $user->delete();
+
+            return response()->json([
+                'message' => 'User berhasil dihapus',
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat menghapus user',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+    public function updateUser(Request $request, $id)
+    {
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:msuser,email,' . $id,
+                'roleId' => 'required|integer',
+            ]);
+
+            $user = MsUser::findOrFail($id);
+
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->roleId = $request->roleId;
+
+            if ($request->has('password')) {
+                $user->password = bcrypt($request->password);
+            }
+
+            $user->save();
+
+            return response()->json([
+                'message' => 'User berhasil diperbarui',
+                'user' => $user,
+            ], 200);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Terjadi kesalahan saat memperbarui user',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
 
 
 
