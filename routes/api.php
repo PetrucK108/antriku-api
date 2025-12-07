@@ -17,6 +17,9 @@ Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanc
 Route::get('/me', [UserController::class, 'me'])->middleware('auth:sanctum');
 Route::get('/me/permissions', [UserController::class, 'getPermissions'])->middleware('auth:sanctum');
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::put('/profile/update', [UserController::class, 'updateProfile']);
+});
 
 
 Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(function () {

@@ -200,7 +200,6 @@ class UserController extends Controller
         }
     }
 
-
     public function updateUser(Request $request, $id)
     {
         try {
@@ -268,10 +267,51 @@ class UserController extends Controller
         }
     }
 
+    public function updateProfile(Request $request)
+    {
+        try {
+            $user = $request->user();
 
+            // --- PERTAHANAN UTAMA ---
+            // Kalau $user null (token invalid/route salah), langsung tolak!
+            if (!$user) {
+                return response()->json(['message' => 'Unauthorized user'], 401);
+            }
 
+            // Baru lanjut validasi setelah yakin user ada
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:msuser,email,' . $user->id,
+                'password' => 'nullable|string|min:6',
+                'currentPassword' => 'nullable|required_with:password|string',
+            ]);
 
+            $user->name = $request->name;
+            $user->email = $request->email;
 
+            // Logic Ganti Password Aman
+            if ($request->filled('password')) {
+                // 1. Cek Password Lama
+                if (!Hash::check($request->currentPassword, $user->password)) {
+                    return response()->json([
+                        'message' => 'Password saat ini salah. Gagal menyimpan.'
+                    ], 400);
+                }
+                // 2. Set Password Baru
+                $user->password = bcrypt($request->password);
+            }
 
+            $user->save();
+
+            return response()->json([
+                'message' => 'Profile berhasil diperbarui',
+                'user' => $user,
+            ], 200);
+        } catch (ValidationException $e) {
+            return response()->json(['message' => 'Validasi gagal', 'errors' => $e->errors()], 422);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error server', 'error' => $e->getMessage()], 500);
+        }
+    }
 
 }
