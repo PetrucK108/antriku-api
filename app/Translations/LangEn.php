@@ -11,6 +11,7 @@ class LangEn {
                 "userManagement" => "User Management",
                 "user" => "User",
                 "role" => "Role",
+                "permission" => "Permission",
                 "reports" => "Reports",
                 "staffDashboard" => "Staff Dashboard",
                 "orders" => "Orders",
