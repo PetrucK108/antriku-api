@@ -11,6 +11,7 @@ class LangId {
                 "userManagement" => "Manajemen Pengguna",
                 "user" => "Pengguna",
                 "role" => "Peran",
+                "perizinan" => "Perizinan",
                 "reports" => "Laporan",
                 "staffDashboard" => "Dashboard Staff",
                 "orders" => "Pesanan",
