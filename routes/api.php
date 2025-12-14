@@ -61,7 +61,8 @@ Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(functi
     Route::put('/update-services/{id}', [ServiceController::class, 'updateService']);
     Route::post('/store-service', [ServiceController::class, 'storeService']);
     Route::delete('/delete-services/{id}', [ServiceController::class, 'deleteService']);
-    
+    Route::post('/service/generate-report', [ServiceController::class, 'generateReport']);
+    Route::get('/download-report/{fileName}', [ServiceController::class, 'downloadReport']);
 });
 
 

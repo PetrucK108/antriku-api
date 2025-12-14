@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use App\Models\MsService;
 use App\Models\TrService;
 use App\Models\MsUser;
+use App\Models\ServiceReport;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade\Pdf; 
 
 class ServiceController extends Controller
 {
@@ -607,6 +609,65 @@ class ServiceController extends Controller
             'total'        => $paginated->total(),
             'data'         => $paginated->items(),
         ]);
+    }
+
+
+
+    public function generateReport(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'report_date' => 'required|date_format:Y-m-d',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validasi gagal',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $reportDate = $request->report_date;
+
+        // Ambil semua transaksi service pada tanggal tersebut
+        $transactions = TrService::with(['service', 'user'])
+            ->whereDate('queue_date', $reportDate)
+            ->orderBy('queue_number', 'asc')
+            ->get();
+
+        // Render view PDF (buat blade: resources/views/reports/service_report.blade.php)
+        $pdf = PDF::loadView('service_report', [
+            'transactions' => $transactions,
+            'report_date' => $reportDate,
+        ]);
+
+        // Simpan PDF ke storage
+        $fileName = "service_report_{$reportDate}.pdf";
+        $filePath = storage_path("app/public/reports/{$fileName}");
+        $pdf->save($filePath);
+
+        // Simpan record report ke DB
+        $report = ServiceReport::create([
+            'report_date' => $reportDate,
+            'created_by'  => $request->user_id, 
+            'file_path'   => "reports/{$fileName}",
+        ]);
+
+        return response()->json([
+            'message' => 'Report berhasil dibuat',
+            'report' => $report,
+            'file_url' => url("storage/{$report->file_path}"),
+        ]);
+    }
+
+    public function downloadReport($fileName)
+    {
+        $filePath = storage_path("app/public/reports/{$fileName}");
+
+        if (!file_exists($filePath)) {
+            return response()->json(['message' => 'File tidak ditemukan'], 404);
+        }
+
+        return response()->download($filePath);
     }
 
 }
