@@ -267,13 +267,9 @@ class UserController extends Controller
         try {
             $user = $request->user();
 
-            // --- PERTAHANAN UTAMA ---
-            // Kalau $user null (token invalid/route salah), langsung tolak!
             if (!$user) {
                 return response()->json(['message' => 'Unauthorized user'], 401);
             }
-
-            // Baru lanjut validasi setelah yakin user ada
             $request->validate([
                 'name' => 'required|string|max:255',
                 'password' => 'nullable|string|min:6',
@@ -281,16 +277,12 @@ class UserController extends Controller
             ]);
 
             $user->name = $request->name;
-
-            // Logic Ganti Password Aman
             if ($request->filled('currentPassword')) {
-                // 1. Cek Password Lama
                 if (!Hash::check($request->currentPassword, $user->password)) {
                     return response()->json([
                         'message' => 'Password saat ini salah. Gagal menyimpan.'
                     ], 400);
                 }
-                // 2. Set Password Baru
                 $user->password = bcrypt($request->newPassword);
             }
 

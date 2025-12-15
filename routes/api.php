@@ -6,6 +6,7 @@ use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\DisplayController;
 // Route::get('/management/data', function () {
 //     return response()->json(['message' => 'Admin atau Staff boleh masuk']);
 // })->middleware(['auth:sanctum', 'role:admin|staff']);
@@ -65,6 +66,8 @@ Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(functi
     Route::post('/service/generate-report', [ServiceController::class, 'generateReport']);
     Route::get('/download-report/{fileName}', [ServiceController::class, 'downloadReport']);
     
+    //Display Punya
+    Route::get('display-all-services', [DisplayController::class,'displayAllServices']);
 });
 
 
