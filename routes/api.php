@@ -7,6 +7,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\DisplayController;
+use App\Http\Controllers\BeritaController;
 // Route::get('/management/data', function () {
 //     return response()->json(['message' => 'Admin atau Staff boleh masuk']);
 // })->middleware(['auth:sanctum', 'role:admin|staff']);
@@ -35,6 +36,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/profile/update', [UserController::class, 'updateProfile']);
 });
 
+Route::post('/forgot-password', [UserController::class, 'forgotPassword']);
+Route::post('/reset-password', [UserController::class, 'resetPassword']);
 
 Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/get-all-user', [UserController::class, 'getAllUser'])->name('getAllUser');
@@ -68,6 +71,19 @@ Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(functi
     
     //Display Punya
     Route::get('display-all-services', [DisplayController::class,'displayAllServices']);
+
+    // Berita Punya
+    Route::get('/get-all-berita', [BeritaController::class, 'getAllBerita'])
+    ->name('getAllBerita');
+
+    Route::post('/store-berita', [BeritaController::class, 'storeBerita'])
+        ->name('storeBerita');
+
+    Route::put('/update-berita/{id}', [BeritaController::class, 'updateBerita'])
+        ->name('updateBerita');
+
+    Route::delete('/delete-berita/{id}', [BeritaController::class, 'deleteBerita'])
+        ->name('deleteBerita');
 });
 
 

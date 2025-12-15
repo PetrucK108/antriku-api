@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\MsUser;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -314,5 +317,94 @@ class UserController extends Controller
             'total'  => $total,
         ], 200);
     }
+    public function forgotPassword(Request $request)
+    {
+        try {
+            $request->validate([
+                'email' => ['required', 'email', 'exists:msuser,email'],
+            ], [
+                'email.exists' => 'Email ini tidak terdaftar.'
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'message' => 'Validasi gagal',
+                'errors' => $e->errors(),
+            ], 422);
+        }
 
+        $email = $request->email;
+        $token = Str::random(60);
+
+        DB::table('password_reset_tokens')->updateOrInsert(
+            ['email' => $email],
+            [
+                'email' => $email,
+                'token' => Hash::make($token),
+                'created_at' => now(),
+            ]
+        );
+
+        $resetLink = config('app.frontend_url') . '/reset-password/' . $token;
+
+        try {
+            Mail::raw("Link reset password Anda: " . $resetLink, function ($message) use ($email) {
+                $message->to($email)->subject('Reset Password Anda');
+            });
+        } catch (\Exception $e) {
+            DB::table('password_reset_tokens')->where('email', $email)->delete();
+            return response()->json([
+                'message' => 'Gagal mengirim email reset.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+
+        return response()->json([
+            'message' => 'Tautan reset kata sandi telah dikirim ke email Anda.'
+        ], 200);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        try {
+            // Validasi diubah untuk menggunakan field new_password dan confirm_password dari frontend
+            $request->validate([
+                'token' => ['required', 'string'],
+                'email' => ['required', 'email'],
+                'new_password' => ['required', 'string', 'min:6'],
+                'confirm_password' => ['required', 'same:new_password'], // Menggunakan rule 'same'
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json(['message' => 'Validasi gagal', 'errors' => $e->errors()], 422);
+        }
+
+        $tokenRecord = DB::table('password_reset_tokens')
+            ->where('email', $request->email)
+            ->first();
+
+        if (!$tokenRecord) {
+            return response()->json(['message' => 'Email tidak valid atau token tidak ditemukan.'], 404);
+        }
+
+        $tokenIsValid = Hash::check($request->token, $tokenRecord->token);
+        // Memeriksa kadaluarsa (default 60 menit)
+        $tokenIsExpired = now()->diffInMinutes($tokenRecord->created_at) > config('auth.passwords.users.expire', 60);
+
+        if (!$tokenIsValid || $tokenIsExpired) {
+            DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+            return response()->json(['message' => 'Token tidak valid atau sudah kedaluwarsa.'], 400);
+        }
+        
+        $user = MsUser::where('email', $request->email)->first();
+        if (!$user) {
+            return response()->json(['message' => 'Pengguna tidak ditemukan.'], 404);
+        }
+        
+        // Menggunakan field 'new_password' dari request untuk pembaruan
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+
+        return response()->json(['message' => 'Kata sandi berhasil direset.'], 200);
+    }
 }
