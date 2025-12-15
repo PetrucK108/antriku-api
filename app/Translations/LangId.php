@@ -18,9 +18,18 @@ class LangId
                 "service" => "Layanan",
                 "staffDashboard" => "Dashboard Staff",
                 "orders" => "Pesanan",
+                "history" => "Riwayat",
+                "display" => "Tampilan",
                 "myDashboard" => "Dashboard Saya",
                 "profile" => "Profil",
                 "logout" => "Keluar"
+            ],
+            'display' => [
+                'title' => 'Tampilan Antrian',
+                'loading' => 'Memuat Data...',
+                'nowServing' => 'SEDANG DIPANGGIL:',
+                'next' => 'BERIKUTNYA:',
+                'dash' => '-',
             ],
             'Forbidden' => [
                 'Forbidden' => 'Dilarang',
@@ -158,7 +167,7 @@ class LangId
                 'ErrorLoadDashboard' => 'Gagal memuat dashboard',
                 'Loading' => 'Memuat...',
                 'AdminDashboard' => 'Dashboard Admin',
-                'Welcome' => 'Selamat Datang,',
+                'Welcome' => 'Selamat Datang ',
                 'Administrator' => 'ADMINISTRATOR',
                 'ServerTime' => 'Waktu Server',
                 'TotalPatients' => 'Total Pasien',

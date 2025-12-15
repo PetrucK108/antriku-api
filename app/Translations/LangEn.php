@@ -4,8 +4,10 @@ namespace App\Translations;
 
 use Symfony\Component\HttpKernel\Profiler\Profile;
 
-class LangEn {
-    public static function get() {
+class LangEn
+{
+    public static function get()
+    {
         return [
             "Sidebar" => [
                 "appName" => "Antriku",
@@ -18,9 +20,18 @@ class LangEn {
                 "service" => "Service",
                 "staffDashboard" => "Staff Dashboard",
                 "orders" => "Orders",
+                "history" => "History",
+                "display" => "Display",
                 "myDashboard" => "My Dashboard",
                 "profile" => "Profile",
                 "logout" => "Logout"
+            ],
+            'display' => [
+                'title' => 'Queue Display',
+                'loading' => 'Loading Data...',
+                'nowServing' => 'NOW SERVING:',
+                'next' => 'NEXT:',
+                'dash' => '-',
             ],
             'Forbidden' => [
                 'Forbidden' => 'Forbidden',
@@ -146,7 +157,7 @@ class LangEn {
                 'ErrorLoadDashboard' => 'Failed to load dashboard',
                 'Loading' => 'Loading...',
                 'AdminDashboard' => 'Admin Dashboard',
-                'Welcome' => 'Welcome,',
+                'Welcome' => 'Welcome ',
                 'Administrator' => 'ADMINISTRATOR',
                 'ServerTime' => 'Server Time',
                 'TotalPatients' => 'Total Patients',
@@ -279,9 +290,7 @@ class LangEn {
                 'OpenManually' => 'Open PDF Manually',
                 'HelperText' => 'Select a date and click Generate. The PDF will automatically open in a new tab.',
             ],
-            'tables' => [
-
-            ],
+            'tables' => [],
         ];
     }
 }
