@@ -121,7 +121,7 @@ class LangEn {
                 'SuccessBooking' => 'Booking Successful',
                 'QueueNumber' => 'Your Queue Number',
                 'ErrorBooking' => 'Booking Failed',
-                'ActiveQueueExists' => 'You already have an active queue', 
+                'ActiveQueueExists' => 'You already have an active queue',
                 'InvalidUserOrService' => 'Invalid User or Service',
                 'PleaseRelogin' => 'Please log in again',
                 'BookingTitle' => 'Booking',
@@ -143,6 +143,7 @@ class LangEn {
                 'QueueDate' => 'Queue Date',
             ],
             'dashboard' => [
+                'ErrorLoadDashboard' => 'Failed to load dashboard',
                 'Loading' => 'Loading...',
                 'AdminDashboard' => 'Admin Dashboard',
                 'Welcome' => 'Welcome,',
@@ -206,6 +207,9 @@ class LangEn {
                 'MonthlyMeeting' => 'Monthly Meeting',
                 'NewNotePlaceholder' => 'New note...',
                 'CheckIn' => 'Check In',
+                'NotAssigned' => 'Not assigned',
+                'ServiceCode' => 'Service Code',
+                'Unknown' => 'Unknown',
             ],
             'service' => [
                 'Services' => 'Services',

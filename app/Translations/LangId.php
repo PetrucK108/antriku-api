@@ -155,6 +155,7 @@ class LangId
                 'QueueDate' => 'Tanggal Antrian',
             ],
             'dashboard' => [
+                'ErrorLoadDashboard' => 'Gagal memuat dashboard',
                 'Loading' => 'Memuat...',
                 'AdminDashboard' => 'Dashboard Admin',
                 'Welcome' => 'Selamat Datang,',
@@ -218,6 +219,9 @@ class LangId
                 'MonthlyMeeting' => 'Rapat Bulanan',
                 'NewNotePlaceholder' => 'Catatan baru...',
                 'CheckIn' => 'Daftar Kedatangan',
+                'NotAssigned' => 'Belum di-assign',
+                'ServiceCode' => 'Kode Layanan',
+                'Unknown' => 'Tidak diketahui',
             ],
             'service' => [
                 'Services' => 'Layanan',
