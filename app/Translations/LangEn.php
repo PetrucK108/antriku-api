@@ -4,8 +4,10 @@ namespace App\Translations;
 
 use Symfony\Component\HttpKernel\Profiler\Profile;
 
-class LangEn {
-    public static function get() {
+class LangEn
+{
+    public static function get()
+    {
         return [
             "Sidebar" => [
                 "appName" => "Antriku",
@@ -18,9 +20,18 @@ class LangEn {
                 "service" => "Service",
                 "staffDashboard" => "Staff Dashboard",
                 "orders" => "Orders",
+                "history" => "History",
+                "display" => "Display",
                 "myDashboard" => "My Dashboard",
                 "profile" => "Profile",
                 "logout" => "Logout"
+            ],
+            'display' => [
+                'title' => 'Queue Display',
+                'loading' => 'Loading Data...',
+                'nowServing' => 'NOW SERVING:',
+                'next' => 'NEXT:',
+                'dash' => '-',
             ],
             'Forbidden' => [
                 'Forbidden' => 'Forbidden',
@@ -121,7 +132,7 @@ class LangEn {
                 'SuccessBooking' => 'Booking Successful',
                 'QueueNumber' => 'Your Queue Number',
                 'ErrorBooking' => 'Booking Failed',
-                'ActiveQueueExists' => 'You already have an active queue', 
+                'ActiveQueueExists' => 'You already have an active queue',
                 'InvalidUserOrService' => 'Invalid User or Service',
                 'PleaseRelogin' => 'Please log in again',
                 'BookingTitle' => 'Booking',
@@ -143,9 +154,10 @@ class LangEn {
                 'QueueDate' => 'Queue Date',
             ],
             'dashboard' => [
+                'ErrorLoadDashboard' => 'Failed to load dashboard',
                 'Loading' => 'Loading...',
                 'AdminDashboard' => 'Admin Dashboard',
-                'Welcome' => 'Welcome,',
+                'Welcome' => 'Welcome ',
                 'Administrator' => 'ADMINISTRATOR',
                 'ServerTime' => 'Server Time',
                 'TotalPatients' => 'Total Patients',
@@ -206,6 +218,9 @@ class LangEn {
                 'MonthlyMeeting' => 'Monthly Meeting',
                 'NewNotePlaceholder' => 'New note...',
                 'CheckIn' => 'Check In',
+                'NotAssigned' => 'Not assigned',
+                'ServiceCode' => 'Service Code',
+                'Unknown' => 'Unknown',
             ],
             'service' => [
                 'Services' => 'Services',
@@ -275,9 +290,7 @@ class LangEn {
                 'OpenManually' => 'Open PDF Manually',
                 'HelperText' => 'Select a date and click Generate. The PDF will automatically open in a new tab.',
             ],
-            'tables' => [
-
-            ],
+            'tables' => [],
         ];
     }
 }

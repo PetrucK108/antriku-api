@@ -18,9 +18,18 @@ class LangId
                 "service" => "Layanan",
                 "staffDashboard" => "Dashboard Staff",
                 "orders" => "Pesanan",
+                "history" => "Riwayat",
+                "display" => "Tampilan",
                 "myDashboard" => "Dashboard Saya",
                 "profile" => "Profil",
                 "logout" => "Keluar"
+            ],
+            'display' => [
+                'title' => 'Tampilan Antrian',
+                'loading' => 'Memuat Data...',
+                'nowServing' => 'SEDANG DIPANGGIL:',
+                'next' => 'BERIKUTNYA:',
+                'dash' => '-',
             ],
             'Forbidden' => [
                 'Forbidden' => 'Dilarang',
@@ -155,9 +164,10 @@ class LangId
                 'QueueDate' => 'Tanggal Antrian',
             ],
             'dashboard' => [
+                'ErrorLoadDashboard' => 'Gagal memuat dashboard',
                 'Loading' => 'Memuat...',
                 'AdminDashboard' => 'Dashboard Admin',
-                'Welcome' => 'Selamat Datang,',
+                'Welcome' => 'Selamat Datang ',
                 'Administrator' => 'ADMINISTRATOR',
                 'ServerTime' => 'Waktu Server',
                 'TotalPatients' => 'Total Pasien',
@@ -218,6 +228,9 @@ class LangId
                 'MonthlyMeeting' => 'Rapat Bulanan',
                 'NewNotePlaceholder' => 'Catatan baru...',
                 'CheckIn' => 'Daftar Kedatangan',
+                'NotAssigned' => 'Belum di-assign',
+                'ServiceCode' => 'Kode Layanan',
+                'Unknown' => 'Tidak diketahui',
             ],
             'service' => [
                 'Services' => 'Layanan',
