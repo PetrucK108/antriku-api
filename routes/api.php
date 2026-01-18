@@ -61,7 +61,7 @@ Route::middleware(['auth:sanctum', 'role:admin'])->prefix('admin')->group(functi
     Route::put('permissions/{id}/roles', [PermissionController::class, 'updateRoles']);
     
     //service punya
-    Route::get('/get-all-services',[ServiceController::class,'getAllServices'])->name('getAllServices');
+    Route::get('/get-all-services',[ServiceController::class,'getAllServices']);
     Route::get('/services-detail/{id}', [ServiceController::class, 'getServiceById']);
     Route::put('/update-services/{id}', [ServiceController::class, 'updateService']);
     Route::post('/store-service', [ServiceController::class, 'storeService']);
